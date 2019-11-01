@@ -1,0 +1,9 @@
+apply plugin: 'idea'
+
+idea {
+    module {
+        [".idea", "logs"].each {
+            excludeDirs += file("$it")
+        }
+    }
+}
