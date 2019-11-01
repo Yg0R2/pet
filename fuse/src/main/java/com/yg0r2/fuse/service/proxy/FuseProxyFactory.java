@@ -18,7 +18,8 @@ public class FuseProxyFactory {
     private ExecutorService fuseBoxExecutorService;
 
     @SuppressWarnings("unchecked")
-    public <T> T create(Object obj, Class[] interfaces, String serviceName) {
+    //public <T> T create(T obj, Class<? super T>[] interfaces, String serviceName) {
+    public <T> T create(Object obj, Class<?>[] interfaces, String serviceName) {
         return (T) Proxy.newProxyInstance(getClassLoader(obj), interfaces, createFuseProxy(obj, getFuseConfig(serviceName)));
     }
 

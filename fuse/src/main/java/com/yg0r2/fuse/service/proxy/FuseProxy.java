@@ -15,7 +15,7 @@ public class FuseProxy implements InvocationHandler {
     private final FuseConfig fuseConfig;
     private final ExecutorService executorService;
 
-    public FuseProxy(Object obj, FuseConfig fuseConfig, ExecutorService executorService) {
+    FuseProxy(Object obj, FuseConfig fuseConfig, ExecutorService executorService) {
         this.obj = Objects.requireNonNull(obj);
         this.fuseConfig = Objects.requireNonNull(fuseConfig);
         this.executorService = Objects.requireNonNull(executorService);

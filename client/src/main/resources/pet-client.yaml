@@ -5,3 +5,7 @@ clients.pet:
   url:
     create: ${clients.pet.baseUrl}/api/pet
     getPattern: ${clients.pet.baseUrl}/api/pet/%s
+
+fuse-box.services.pet:
+  serviceCallTimeout: 2000
+  #fallbackMethodName: fallback

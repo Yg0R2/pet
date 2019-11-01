@@ -5,8 +5,10 @@ import com.yg0r2.fuse.exception.FuseException;
 import com.yg0r2.fuse.exception.FuseRequestTimeoutException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 import java.lang.reflect.Method;
+import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
@@ -49,7 +51,7 @@ public class FuseService {
 
     private Object invoke(Callable<Object> invocationCallable) {
         try {
-            Future<Object> future = executorService.submit(() -> invocationCallable.call());
+            Future<Object> future = executorService.submit(invocationCallable::call);
 
             return future.get(fuseConfig.getServiceCallTimeout(), TimeUnit.MILLISECONDS);
         }

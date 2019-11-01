@@ -4,9 +4,13 @@ import com.yg0r2.core.client.YamlPropertyLoaderFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.PropertySources;
 
 @Configuration
-@PropertySource(value = {"classpath:pet-client.yaml", "classpath:pet-client-${spring.profiles.active}.yaml"}, factory = YamlPropertyLoaderFactory.class)
+@PropertySources(value = {
+    @PropertySource(value = {"classpath:pet-client.yaml"}, factory = YamlPropertyLoaderFactory.class),
+    @PropertySource(value = {"classpath:pet-client-${spring.profiles.active}.yaml"}, factory = YamlPropertyLoaderFactory.class, ignoreResourceNotFound = true)
+})
 public class PetClientConfig {
 
     @Value("${clients.pet.url.create}")
