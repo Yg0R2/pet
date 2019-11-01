@@ -1,32 +1,29 @@
 package com.yg0r2.pet.client;
 
 import com.yg0r2.pet.api.model.PetEntry;
+import com.yg0r2.pet.client.configuration.PetClientConfig;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
+@ComponentScan(value = {"com.yg0r2.pet", "com.yg0r2.core"})
 public class PetClient {
 
-    @Value("${clients.pet.url.create}")
-    private String createUrl;
-    @Value("${clients.pet.url.getPattern}")
-    private String getUrlPattern;
-
     @Autowired
-    private RestTemplate restTemplate;
+    private PetClientConfig petClientConfig;
+    @Autowired
+    private RestTemplate clientRestTemplate;
 
     public PetEntry create(PetEntry petEntry) {
-        return restTemplate.postForObject(createUrl, petEntry, PetEntry.class);
+        return clientRestTemplate.postForObject(petClientConfig.getCreateUrl(), petEntry, PetEntry.class);
     }
 
     public PetEntry get(long id) {
-        String url = String.format(getUrlPattern, id);
+        String url = String.format(petClientConfig.getGetUrlPattern(), id);
 
-        return restTemplate.getForObject(url, PetEntry.class);
+        return clientRestTemplate.getForObject(url, PetEntry.class);
     }
 
 }
