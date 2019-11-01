@@ -12,6 +12,10 @@ allprojects {
         mavenCentral()
     }
 
+    compileJava {
+        options.compilerArgs << '-Xlint:unchecked'
+    }
+
     test {
         useTestNG()
     }
