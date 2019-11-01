@@ -1,0 +1,6 @@
+dependencies {
+    compile project(':api')
+
+    compile 'org.springframework:spring-context'
+    compile 'org.springframework:spring-web'
+}

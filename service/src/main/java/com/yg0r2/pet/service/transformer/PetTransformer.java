@@ -10,12 +10,15 @@ public class PetTransformer {
     public PetEntity transform(PetEntry petEntry) {
         PetEntity petEntity = new PetEntity();
 
+        petEntity.setTitle(petEntry.getTitle());
+
         return petEntity;
     }
 
     public PetEntry transform(PetEntity petEntity) {
         return new PetEntry.Builder()
             .withId(petEntity.getId())
+            .withTitle(petEntity.getTitle())
             .build();
     }
 

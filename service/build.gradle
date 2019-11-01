@@ -1,4 +1,6 @@
 dependencies {
     compile project(':api')
     compile project(':dao')
+
+    compile project(':client')
 }

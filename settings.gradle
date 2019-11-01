@@ -3,4 +3,5 @@ include 'dao'
 include 'api'
 include 'service'
 include 'web'
+include 'client'
 

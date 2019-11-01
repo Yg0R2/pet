@@ -1,0 +1,3 @@
+server.port: 8080
+
+clients.pet.baseUrl: http://localhost:9090

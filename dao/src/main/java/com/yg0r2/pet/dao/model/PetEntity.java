@@ -16,6 +16,9 @@ public final class PetEntity {
     @Column(nullable = false, updatable = false)
     private long id;
 
+    @Column(nullable = false)
+    private String title;
+
     public PetEntity() {
     }
 
@@ -25,6 +28,14 @@ public final class PetEntity {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
 }

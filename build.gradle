@@ -55,6 +55,10 @@ dependencies {
     implementation group: 'io.springfox', name: 'springfox-swagger2', version: '+'
     implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '+'
 
+    compile group: 'commons-io', name: 'commons-io', version: '+'
+
+    compile 'org.springframework.boot:spring-boot-starter-actuator'
+
     implementation group: 'com.h2database', name: 'h2', version: '+'
 
     testCompileOnly files { project(':web').sourceSets.test.output }
