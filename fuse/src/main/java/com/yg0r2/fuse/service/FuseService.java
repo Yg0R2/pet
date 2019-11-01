@@ -5,10 +5,8 @@ import com.yg0r2.fuse.exception.FuseException;
 import com.yg0r2.fuse.exception.FuseRequestTimeoutException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 
 import java.lang.reflect.Method;
-import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
@@ -51,15 +49,15 @@ public class FuseService {
 
     private Object invoke(Callable<Object> invocationCallable) {
         try {
-            Future<Object> future = executorService.submit(invocationCallable::call);
+            Future<Object> future = executorService.submit(invocationCallable);
 
             return future.get(fuseConfig.getServiceCallTimeout(), TimeUnit.MILLISECONDS);
         }
         catch (TimeoutException exception) {
             throw new FuseRequestTimeoutException(String.format("Request timed out; execution took more then %s ms", fuseConfig.getServiceCallTimeout()), exception);
         }
-        catch (Throwable exception) {
-            throw new FuseException(exception);
+        catch (Throwable throwable) {
+            throw new FuseException(throwable);
         }
     }
 
@@ -67,12 +65,13 @@ public class FuseService {
         return invokeFallback(fuseConfig.getFallbackMethodName(), obj, clazz, args);
     }
 
-    public Object invokeFallback(String fallbackMethodName, Object obj, Class<?> clazz, Object... args) {
+    private Object invokeFallback(String fallbackMethodName, Object obj, Class<?> clazz, Object... args) {
         LOGGER.info("Execute fallback on service: '{}'", fuseConfig.getServiceName());
 
         try {
             Method method = clazz.getDeclaredMethod(fallbackMethodName);
 
+            //noinspection JavaReflectionInvocation
             return method.invoke(obj, args);
         }
         catch (Exception exception) {
