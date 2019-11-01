@@ -1,25 +1,62 @@
-plugins {
-	id 'org.springframework.boot' version '2.2.0.RELEASE'
-	id 'io.spring.dependency-management' version '1.0.8.RELEASE'
-	id 'java'
-}
-
-group = 'com.yg0r2.pet'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
-
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
-test {
-	useTestNG()
+buildscript {
+    ext {
+        springBootVersion = '2.1.0.RELEASE'
+        dockerVersion = '0.21.0'
+    }
+    repositories {
+        mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath("gradle.plugin.com.palantir.gradle.docker:gradle-docker:${dockerVersion}")
+    }
+}
+
+apply from: "gradle/allProjects.gradle"
+apply from: "gradle/subProjects.gradle"
+
+springBoot {
+    mainClassName = 'com.yg0r2.pet.PetApplication'
+}
+
+bootRun {
+    String activeProfile = System.properties['spring.profiles.active']
+    systemProperty "spring.profiles.active", activeProfile
+
+    if (activeProfile == null) {
+        jvmArgs = ['-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8000']
+    }
+
+    sourceSets {
+        main {
+            java {
+                srcDir files(project(':web').sourceSets.main.java.srcDirs)
+                srcDir files(project.sourceSets.main.java.srcDirs)
+            }
+            resources {
+                srcDir files(project(':web').sourceSets.main.resources.srcDirs)
+                srcDir files(project.sourceSets.main.resources.srcDirs)
+            }
+        }
+    }
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter'
+    compile project(':web')
+    compileOnly files { project(':web').sourceSets.main.output }
 
-	testImplementation('org.springframework.boot:spring-boot-starter-test')
-	testImplementation group: 'org.mockito', name: 'mockito-core', version: '+'
-	testImplementation group: 'org.testng', name: 'testng', version: '+'
+    implementation group: 'io.springfox', name: 'springfox-swagger2', version: '+'
+    implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '+'
+
+    implementation group: 'com.h2database', name: 'h2', version: '+'
+
+    testCompileOnly files { project(':web').sourceSets.test.output }
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
 }

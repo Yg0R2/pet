@@ -1,0 +1,11 @@
+jar {
+    enabled = false
+}
+
+dependencies {
+    compile project(':service')
+
+    compile 'org.springframework.boot:spring-boot-starter-web'
+
+    compile group: 'javax.ws.rs', name: 'javax.ws.rs-api', version: '+'
+}

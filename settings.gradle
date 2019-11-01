@@ -1,1 +1,6 @@
 rootProject.name = 'pet'
+include 'dao'
+include 'api'
+include 'service'
+include 'web'
+

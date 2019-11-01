@@ -1,0 +1,23 @@
+allprojects {
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'java'
+
+    group 'com.yg0r2.pet'
+    version '0.0.1-SNAPSHOT'
+
+    sourceCompatibility = '11'
+
+    repositories {
+        mavenCentral()
+    }
+
+    test {
+        useTestNG()
+    }
+
+    dependencies {
+        testImplementation group: 'org.mockito', name: 'mockito-core', version: '+'
+        testImplementation group: 'org.testng', name: 'testng', version: '+'
+    }
+}
