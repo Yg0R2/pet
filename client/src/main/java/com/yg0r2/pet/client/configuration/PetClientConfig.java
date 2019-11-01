@@ -15,15 +15,15 @@ public class PetClientConfig {
 
     @Value("${clients.pet.url.create}")
     private String createUrl;
-    @Value("${clients.pet.url.getPattern}")
-    private String getUrlPattern;
+    @Value("${clients.pet.url.get}")
+    private String getUrl;
 
     public String getCreateUrl() {
         return createUrl;
     }
 
-    public String getGetUrlPattern() {
-        return getUrlPattern;
+    public String getGetUrl() {
+        return getUrl;
     }
 
 }

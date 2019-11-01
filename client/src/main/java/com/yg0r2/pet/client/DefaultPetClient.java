@@ -1,18 +1,17 @@
 package com.yg0r2.pet.client;
 
 import com.yg0r2.core.api.model.RequestContext;
-import com.yg0r2.core.api.model.RequestParams;
+import com.yg0r2.core.client.AbstractCoreClient;
 import com.yg0r2.pet.api.model.PetEntry;
 import com.yg0r2.pet.client.configuration.PetClientConfig;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.RequestEntity;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
 
-public class DefaultPetClient implements PetClient {
+public class DefaultPetClient extends AbstractCoreClient implements PetClient {
 
     private final PetClientConfig petClientConfig;
     private final RestTemplate restTemplate;
@@ -32,17 +31,8 @@ public class DefaultPetClient implements PetClient {
     public PetEntry get(long id, RequestContext requestContext) {
         HttpEntity<?> entity = new HttpEntity(createHeaders(requestContext));
 
-        return restTemplate.exchange(petClientConfig.getGetUrlPattern(), HttpMethod.GET, entity, PetEntry.class, id)
+        return restTemplate.exchange(petClientConfig.getGetUrl(), HttpMethod.GET, entity, PetEntry.class, id)
             .getBody();
-    }
-
-    private HttpHeaders createHeaders(RequestContext requestContext) {
-        HttpHeaders headers = new HttpHeaders();
-
-        headers.add(RequestParams.REQUEST_ID.getValue(), requestContext.getRequestId());
-        headers.add(RequestParams.SESSION_ID.getValue(), requestContext.getSessionId());
-
-        return headers;
     }
 
 }

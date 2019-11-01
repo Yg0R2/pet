@@ -4,7 +4,8 @@ clients.pet:
   baseUrl: http://localhost:8080
   url:
     create: ${clients.pet.baseUrl}/api/pet
-    getPattern: ${clients.pet.baseUrl}/api/pet/{id}
+    getAll: ${clients.pet.baseUrl}/api/pet
+    get: ${clients.pet.url.getAll}/{id}
 
 fuse-box.services.pet:
   serviceCallTimeout: 2000
