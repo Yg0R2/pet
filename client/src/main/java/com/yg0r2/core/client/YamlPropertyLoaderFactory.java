@@ -7,6 +7,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.DefaultPropertySourceFactory;
 import org.springframework.core.io.support.EncodedResource;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
@@ -26,7 +27,17 @@ public class YamlPropertyLoaderFactory extends DefaultPropertySourceFactory {
     }
 
     private List<PropertySource<?>> loadYamlResources(Resource resource) throws IOException {
-        return YAML_PROPERTY_SOURCE_LOADER.load(resource.getFilename(), resource);
+        try {
+            return YAML_PROPERTY_SOURCE_LOADER.load(resource.getFilename(), resource);
+        }
+        catch (IllegalStateException exception) {
+            // Workaround for Spring issue: https://github.com/spring-projects/spring-framework/issues/22276
+            if (exception.getCause() instanceof FileNotFoundException) {
+                throw (FileNotFoundException) exception.getCause();
+            }
+
+            throw exception;
+        }
     }
 
 }
