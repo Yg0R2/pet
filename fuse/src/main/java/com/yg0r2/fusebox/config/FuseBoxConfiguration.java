@@ -32,7 +32,7 @@ public class FuseBoxConfiguration {
     }
 
     @Configuration
-    @ConfigurationProperties(prefix = "fuse-box", ignoreInvalidFields = true, ignoreUnknownFields = false)
+    @ConfigurationProperties(prefix = "fuse-box", ignoreUnknownFields = false)
     static class FuseBoxServiceConfiguration {
 
         private Map<String, FuseConfig.ConfigBuilder> services;
@@ -54,6 +54,7 @@ public class FuseBoxConfiguration {
                 .setServiceName(entry.getKey())
                 .build();
         }
+
     }
 
 }

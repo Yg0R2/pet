@@ -29,7 +29,7 @@ public class PetClientConfiguration {
     public PetClient petClient() {
         PetClient petClient = new DefaultPetClient(clientRestTemplate, petClientConfig);
 
-        return fuseProxyFactory.create(petClient, new Class[] { PetClient.class }, "pet");
+        return fuseProxyFactory.create(petClient, PetClient.class, "pet");
     }
 
 }
