@@ -29,4 +29,5 @@ public final class RequestBodyLoggingAdviceAdapter extends RequestBodyAdviceAdap
 
         return super.afterBodyRead(body, inputMessage, parameter, targetType, converterType);
     }
+
 }

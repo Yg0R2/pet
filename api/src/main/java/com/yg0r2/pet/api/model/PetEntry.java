@@ -7,7 +7,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -18,7 +18,7 @@ public class PetEntry {
 
     private final long id;
 
-    @NotNull
+    @NotBlank
     private final String title;
 
     private PetEntry(Builder builder) {

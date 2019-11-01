@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.constraints.NotNull;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Spliterator;
@@ -26,7 +27,7 @@ public final class LoggingService {
     @Autowired
     private ObjectMapper objectMapper;
 
-    public void logRequest(HttpServletRequest request, Object body) {
+    public void logRequest(HttpServletRequest request, @NotNull Object body) {
         Map<String, String> headers = getHeaders(request.getHeaderNames().asIterator(), request::getHeader);
 
         LOGGER.info(String.format(PATTERN, "Request", request.getMethod(), request.getRequestURL().toString(), headers, getBodyAsJson(body)));
