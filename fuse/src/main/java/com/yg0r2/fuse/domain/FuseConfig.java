@@ -10,6 +10,9 @@ public final class FuseConfig {
 
     private final String serviceName;
     private final long serviceCallTimeout;
+    private final int requestThreshold;
+    private final float errorThresholdPercentage;
+    private final long sleepingWindow;
     private final boolean logRequest;
     private final boolean logResponse;
     private final String fallbackMethodName;
@@ -17,7 +20,10 @@ public final class FuseConfig {
 
     private FuseConfig(ConfigBuilder configBuilder) {
         serviceName = Objects.requireNonNull(configBuilder.serviceName);
-        serviceCallTimeout = Optional.ofNullable(configBuilder.serviceCallTimeout).orElse(10_000L);
+        serviceCallTimeout = Optional.ofNullable(configBuilder.serviceCallTimeout).orElse(5_000L);
+        requestThreshold = Optional.ofNullable(configBuilder.requestThreshold).orElse(100);
+        errorThresholdPercentage = Optional.ofNullable(configBuilder.errorThresholdPercentage).orElse(0.25F);
+        sleepingWindow = Optional.ofNullable(configBuilder.sleepingWindow).orElse(10_000L);
         logRequest = Optional.ofNullable(configBuilder.logRequest).orElse(true);
         logResponse = Optional.ofNullable(configBuilder.logResponse).orElse(true);
         fallbackMethodName = Optional.ofNullable(configBuilder.fallbackMethodName).filter(Predicate.not(String::isBlank)).orElse(null);
@@ -30,6 +36,18 @@ public final class FuseConfig {
 
     public long getServiceCallTimeout() {
         return serviceCallTimeout;
+    }
+
+    public int getRequestThreshold() {
+        return requestThreshold;
+    }
+
+    public float getErrorThresholdPercentage() {
+        return errorThresholdPercentage;
+    }
+
+    public long getSleepingWindow() {
+        return sleepingWindow;
     }
 
     public boolean isLogRequest() {
@@ -52,6 +70,9 @@ public final class FuseConfig {
 
         private String serviceName;
         private Long serviceCallTimeout;
+        private Integer requestThreshold;
+        private Float errorThresholdPercentage;
+        private Long sleepingWindow;
         private Boolean logRequest;
         private Boolean logResponse;
         private String fallbackMethodName;
@@ -65,6 +86,24 @@ public final class FuseConfig {
 
         public ConfigBuilder setServiceCallTimeout(Long serviceCallTimeout) {
             this.serviceCallTimeout = serviceCallTimeout;
+
+            return this;
+        }
+
+        public ConfigBuilder setRequestThreshold(Integer requestThreshold) {
+            this.requestThreshold = requestThreshold;
+
+            return this;
+        }
+
+        public ConfigBuilder setErrorThresholdPercentage(Float errorThresholdPercentage) {
+            this.errorThresholdPercentage = errorThresholdPercentage;
+
+            return this;
+        }
+
+        public ConfigBuilder setSleepingWindow(Long sleepingWindow) {
+            this.sleepingWindow = sleepingWindow;
 
             return this;
         }

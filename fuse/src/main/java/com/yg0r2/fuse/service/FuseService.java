@@ -39,6 +39,22 @@ public class FuseService {
         return result;
     }
 
+    public Object invokeFallback(Object obj, Class<?> clazz, Object... args) {
+        LOGGER.info("Execute fallback on service: '{}'", fuseConfig.getServiceName());
+
+        String fallbackMethodName = fuseConfig.getFallbackMethodName();
+
+        try {
+            Method method = clazz.getDeclaredMethod(fallbackMethodName);
+
+            //noinspection JavaReflectionInvocation
+            return method.invoke(obj, args);
+        }
+        catch (Throwable throwable) {
+            throw new FuseException(String.format("Failed execute fallback method: '%s' on service '%s'", fallbackMethodName, fuseConfig.getServiceName()), throwable);
+        }
+    }
+
     private Object getRequest(Object[] args) {
         if ((args == null) || (args.length == 0)) {
             return null;
@@ -58,24 +74,6 @@ public class FuseService {
         }
         catch (Throwable throwable) {
             throw new FuseException(throwable);
-        }
-    }
-
-    public Object invokeFallback(Object obj, Class<?> clazz, Object... args) {
-        return invokeFallback(fuseConfig.getFallbackMethodName(), obj, clazz, args);
-    }
-
-    private Object invokeFallback(String fallbackMethodName, Object obj, Class<?> clazz, Object... args) {
-        LOGGER.info("Execute fallback on service: '{}'", fuseConfig.getServiceName());
-
-        try {
-            Method method = clazz.getDeclaredMethod(fallbackMethodName);
-
-            //noinspection JavaReflectionInvocation
-            return method.invoke(obj, args);
-        }
-        catch (Exception exception) {
-            throw new FuseException(String.format("Failed execute fallback method: '%s' on service '%s'", fallbackMethodName, fuseConfig.getServiceName()), exception);
         }
     }
 

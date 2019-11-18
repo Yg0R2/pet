@@ -9,4 +9,6 @@ clients.pet:
 
 fuse-box.services.pet:
   serviceCallTimeout: 2000
+  requestThreshold: 10
+  sleepingWindow: 1000
   #fallbackMethodName: fallback
