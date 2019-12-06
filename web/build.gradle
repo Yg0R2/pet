@@ -3,7 +3,7 @@ jar {
 }
 
 dependencies {
-    compile project(':service')
+    api project(':service')
 
     compile 'org.springframework.boot:spring-boot-starter-web'
 

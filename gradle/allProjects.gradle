@@ -2,9 +2,10 @@ allprojects {
     apply plugin: 'org.springframework.boot'
     apply plugin: 'io.spring.dependency-management'
     apply plugin: 'java'
+    apply plugin: 'java-library'
 
     group 'com.yg0r2.pet'
-    version '0.0.1-SNAPSHOT'
+    version '0.0.2-SNAPSHOT'
 
     sourceCompatibility = '11'
 
@@ -17,11 +18,13 @@ allprojects {
     }
 
     test {
-        useTestNG()
+        useJUnitPlatform()
     }
 
     dependencies {
+        testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '+'
+        testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '+'
+
         testImplementation group: 'org.mockito', name: 'mockito-core', version: '+'
-        testImplementation group: 'org.testng', name: 'testng', version: '+'
     }
 }

@@ -2,7 +2,7 @@ apply plugin: 'idea'
 
 idea {
     module {
-        [".idea", "logs"].each {
+        [".idea", "build", "logs"].each {
             excludeDirs += file("$it")
         }
     }
