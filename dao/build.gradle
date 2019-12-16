@@ -1,7 +1,7 @@
 dependencies {
-    compile group: 'org.springframework', name: 'spring-context'
+    api group: 'org.springframework', name: 'spring-context'
 
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa'
+    api group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa'
 
-    compile group: 'org.apache.commons', name: 'commons-lang3', version: '+'
+    api group: 'org.apache.commons', name: 'commons-lang3', version: '+'
 }

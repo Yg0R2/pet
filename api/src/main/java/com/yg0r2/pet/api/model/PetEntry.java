@@ -3,13 +3,15 @@ package com.yg0r2.pet.api.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import javax.validation.constraints.NotBlank;
 import java.util.Objects;
 import java.util.Optional;
+import javax.validation.constraints.NotBlank;
 
 @JsonDeserialize(builder = PetEntry.Builder.class)
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -49,10 +51,17 @@ public class PetEntry {
         return ToStringBuilder.reflectionToString(this);
     }
 
+    public static Builder builder() {
+        return new PetEntry.Builder();
+    }
+
     public static class Builder {
 
         private Long id;
         private String title;
+
+        private Builder() {
+        }
 
         public Builder withId(Long id) {
             this.id = id;

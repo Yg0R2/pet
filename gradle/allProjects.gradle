@@ -17,13 +17,16 @@ allprojects {
         options.compilerArgs << '-Xlint:unchecked'
     }
 
+    jar {
+        enabled = true
+    }
+
     test {
         useJUnitPlatform()
     }
 
     dependencies {
-        testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '+'
-        testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '+'
+        testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter', version: '+'
 
         testImplementation group: 'org.mockito', name: 'mockito-core', version: '+'
     }

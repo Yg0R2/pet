@@ -16,7 +16,7 @@ import javax.validation.constraints.Min;
 import javax.ws.rs.QueryParam;
 import java.util.UUID;
 
-@RestController
+//@RestController
 @RequestMapping("/api/test/client")
 public class PetClientTestController extends AbstractPetServiceController {
 
@@ -31,7 +31,7 @@ public class PetClientTestController extends AbstractPetServiceController {
     @PostMapping
     public String generate(@QueryParam("amount") @Min(1) int amount, @Valid @ModelAttribute RequestContext requestContext) {
         for (int i = 0; i < amount; i++) {
-            PetEntry petEntry = new PetEntry.Builder()
+            PetEntry petEntry = PetEntry.builder()
                 .withTitle(UUID.randomUUID().toString())
                 .build();
 

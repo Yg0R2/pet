@@ -1,8 +1,8 @@
 dependencies {
-    compile project(':api')
-    compile project(':fuse')
+    api project(':api')
+    api project(':fuse')
 
-    implementation 'org.springframework:spring-web'
+    api 'org.springframework:spring-web'
 
-    implementation 'org.springframework.boot:spring-boot'
+    api 'org.springframework.boot:spring-boot'
 }

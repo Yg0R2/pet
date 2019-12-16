@@ -1,0 +1,10 @@
+dependencies {
+    api(project(':')) {
+        exclude group: 'com.yg0r2.pet', module: 'acceptance-test'
+        exclude group: 'com.yg0r2.pet', module: 'client'
+    }
+
+    testImplementation ('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'junit', module: 'junit'
+    }
+}

@@ -16,7 +16,7 @@ public class PetTransformer {
     }
 
     public PetEntry transform(PetEntity petEntity) {
-        return new PetEntry.Builder()
+        return PetEntry.builder()
             .withId(petEntity.getId())
             .withTitle(petEntity.getTitle())
             .build();
