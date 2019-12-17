@@ -1,7 +1,12 @@
+rootProject.subprojects.findAll {
+    it.name != project.name
+}.each {
+    test.dependsOn(":${it.name}:test")
+}
+
 dependencies {
     api(project(':')) {
         exclude group: 'com.yg0r2.pet', module: 'acceptance-test'
-        exclude group: 'com.yg0r2.pet', module: 'client'
     }
 
     testImplementation ('org.springframework.boot:spring-boot-starter-test') {
