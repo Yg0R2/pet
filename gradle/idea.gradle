@@ -2,8 +2,12 @@ apply plugin: 'idea'
 
 idea {
     module {
-        [".idea", "build", "logs"].each {
-            excludeDirs += file("$it")
+        [".idea", "build", "logs"].each { folder ->
+            excludeDirs += file(folder)
+
+            subprojects.each { project ->
+                excludeDirs += file(project.name + "/" + folder)
+            }
         }
     }
 }
