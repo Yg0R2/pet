@@ -2,10 +2,14 @@
 
 clients.pet:
   baseUrl: http://localhost:8080
-  url:
-    create: ${clients.pet.baseUrl}/api/pet
-    getAll: ${clients.pet.baseUrl}/api/pet
-    get: ${clients.pet.url.getAll}/{id}
+  urls:
+    createUrl: ${clients.pet.baseUrl}/api/pet
+    getAllUrl: ${clients.pet.baseUrl}/api/pet
+    getByIdUrl: ${clients.pet.url.getAll}/{id}
+    nested:
+      createUrl: ${clients.pet.baseUrl}/api/pet
+      getAllUrl: ${clients.pet.baseUrl}/api/pet
+      getByIdUrl: ${clients.pet.url.getAll}/{id}
 
 fuse-box.services.pet:
   serviceCallTimeout: 2000

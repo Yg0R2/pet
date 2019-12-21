@@ -31,7 +31,7 @@ public class DefaultPetClient extends AbstractCoreClient implements PetClient {
     public PetEntry get(long id, RequestContext requestContext) {
         HttpEntity<?> entity = new HttpEntity<>(createHeaders(requestContext));
 
-        return restTemplate.exchange(petClientConfig.getGetUrl(), HttpMethod.GET, entity, PetEntry.class, id)
+        return restTemplate.exchange(petClientConfig.getGetByIdUrl(), HttpMethod.GET, entity, PetEntry.class, id)
             .getBody();
     }
 
