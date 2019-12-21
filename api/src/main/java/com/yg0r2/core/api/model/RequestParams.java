@@ -3,6 +3,7 @@ package com.yg0r2.core.api.model;
 public enum RequestParams {
 
     AUTHORIZATION("Authorization"),
+    CONTENT_TYPE("Content-Type"),
     REQUEST_ID("RequestId"),
     SESSION_ID("SessionId");
 
