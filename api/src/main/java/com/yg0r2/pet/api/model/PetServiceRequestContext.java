@@ -2,6 +2,7 @@ package com.yg0r2.pet.api.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.yg0r2.core.api.model.RequestContext;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;

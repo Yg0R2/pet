@@ -6,15 +6,16 @@ import com.yg0r2.pet.dao.repository.PetRepository;
 import com.yg0r2.pet.service.exceptions.PetEntryNotFoundException;
 import com.yg0r2.pet.service.exceptions.UnableToCreatePetEntryException;
 import com.yg0r2.pet.service.transformer.PetTransformer;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+import javax.transaction.Transactional;
 
 @Service
 public class PetService {

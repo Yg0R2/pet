@@ -1,6 +1,7 @@
 package com.yg0r2.pet.logging;
 
 import com.yg0r2.core.api.model.RequestParams;
+
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

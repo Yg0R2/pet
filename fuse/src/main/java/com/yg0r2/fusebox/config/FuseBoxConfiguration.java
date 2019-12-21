@@ -3,6 +3,7 @@ package com.yg0r2.fusebox.config;
 import com.yg0r2.fuse.domain.FuseConfig;
 import com.yg0r2.fusebox.FuseBox;
 import com.yg0r2.fusebox.FuseBoxThreadFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;

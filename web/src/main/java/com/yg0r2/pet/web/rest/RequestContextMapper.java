@@ -4,12 +4,13 @@ import com.yg0r2.core.api.model.RequestContext;
 import com.yg0r2.core.api.model.RequestParams;
 import com.yg0r2.pet.api.model.PetServiceRequestContext;
 import com.yg0r2.pet.web.rest.exceptions.InvalidHeaderException;
+
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Objects;
 import java.util.Optional;
+import javax.servlet.http.HttpServletRequest;
 
 @Component
 public class RequestContextMapper {

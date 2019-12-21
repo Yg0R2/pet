@@ -3,6 +3,7 @@ package com.yg0r2.pet.client.configuration;
 import com.yg0r2.fuse.service.proxy.FuseProxyFactory;
 import com.yg0r2.pet.client.DefaultPetClient;
 import com.yg0r2.pet.client.PetClient;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;

@@ -1,5 +1,7 @@
 package com.yg0r2.pet.web.rest.controller;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.yg0r2.core.api.model.RequestContext;
 import com.yg0r2.core.api.model.RequestParams;
 import com.yg0r2.pet.PetApplication;
@@ -7,6 +9,7 @@ import com.yg0r2.pet.api.model.PetEntry;
 import com.yg0r2.pet.api.model.PetServiceRequestContext;
 import com.yg0r2.pet.dao.repository.PetRepository;
 import com.yg0r2.pet.web.security.JwtTokenFactory;
+
 import org.assertj.core.api.Condition;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -21,10 +24,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 @SpringBootTest(classes = PetApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class PetControllerACTest {
+class PetControllerACTest {
 
     private static final long ID = 123L;
     private static final String TITLE = "petTitle";

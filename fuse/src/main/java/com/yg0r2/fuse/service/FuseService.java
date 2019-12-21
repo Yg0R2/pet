@@ -3,6 +3,7 @@ package com.yg0r2.fuse.service;
 import com.yg0r2.fuse.domain.FuseConfig;
 import com.yg0r2.fuse.exception.FuseException;
 import com.yg0r2.fuse.exception.FuseRequestTimeoutException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

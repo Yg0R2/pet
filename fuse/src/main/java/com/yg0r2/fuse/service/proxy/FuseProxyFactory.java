@@ -2,6 +2,7 @@ package com.yg0r2.fuse.service.proxy;
 
 import com.yg0r2.fuse.domain.FuseConfig;
 import com.yg0r2.fusebox.FuseBox;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
