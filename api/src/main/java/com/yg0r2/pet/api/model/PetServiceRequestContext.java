@@ -9,7 +9,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import java.util.Objects;
 
 @JsonDeserialize(builder = PetServiceRequestContext.Builder.class)
-public final class PetServiceRequestContext implements RequestContext {
+public final class PetServiceRequestContext implements RequestContext<PetEntry> {
 
     private final String requestId;
     private final String sessionId;

@@ -1,5 +1,7 @@
 package com.yg0r2.pet.dao.model;
 
+import com.yg0r2.core.dao.model.CoreEntity;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,8 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "dao")
-public final class PetEntity {
+@Table(name = "pets")
+public final class PetEntity implements CoreEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
