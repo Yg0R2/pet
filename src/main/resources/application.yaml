@@ -1,1 +1,5 @@
 server.port: 8080
+
+jwt:
+  secret: pet-project-secret-key
+  token.duration: PT5S

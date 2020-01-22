@@ -1,7 +1,10 @@
 dependencies {
     api project(':service')
 
+    api 'org.springframework.boot:spring-boot-starter-security'
     api 'org.springframework.boot:spring-boot-starter-web'
+
+    api group: 'io.jsonwebtoken', name: 'jjwt', version: '+'
 
     api group: 'javax.ws.rs', name: 'javax.ws.rs-api', version: '+'
 }
