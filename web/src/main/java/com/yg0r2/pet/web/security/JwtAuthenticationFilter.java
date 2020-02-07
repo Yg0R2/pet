@@ -1,6 +1,7 @@
 package com.yg0r2.pet.web.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.yg0r2.core.api.model.RequestParams;
 import com.yg0r2.pet.service.exceptions.PetServiceInternalException;
 import com.yg0r2.user.api.model.UserEntry;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
@@ -45,7 +46,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-        response.addHeader(JwtKeys.HEADER_PARAM.getKey(), jwtTokenFactory.create(((User) authResult.getPrincipal()).getUsername()));
+        response.addHeader(RequestParams.AUTHORIZATION.getValue(), jwtTokenFactory.create(((User) authResult.getPrincipal()).getUsername()));
     }
 
     private UserEntry getUserEntry(HttpServletRequest request) {

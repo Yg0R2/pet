@@ -9,6 +9,7 @@ public abstract class AbstractCoreClient implements CoreClient {
     protected HttpHeaders createHeaders(RequestContext requestContext) {
         HttpHeaders headers = new HttpHeaders();
 
+        headers.add(RequestParams.AUTHORIZATION.getValue(), requestContext.getAuthorization());
         headers.add(RequestParams.REQUEST_ID.getValue(), requestContext.getRequestId());
         headers.add(RequestParams.SESSION_ID.getValue(), requestContext.getSessionId());
 

@@ -1,5 +1,6 @@
 package com.yg0r2.pet.web.security;
 
+import com.yg0r2.core.api.model.RequestParams;
 import com.yg0r2.pet.web.security.exceptions.InvalidJwtTokenException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -21,7 +22,7 @@ public class JwtClaimExtractor {
 
     private Claims getClaims(HttpServletRequest request) {
         return Optional.ofNullable(request)
-            .map(r -> r.getHeader(JwtKeys.HEADER_PARAM.getKey()))
+            .map(r -> r.getHeader(RequestParams.AUTHORIZATION.getValue()))
             .filter(jwtToken -> jwtToken.startsWith(JwtKeys.BEARER_PREFIX.getKey()))
             .map(jwtToken -> jwtToken.substring(JwtKeys.BEARER_PREFIX.getKey().length()))
             .map(this::parseToken)

@@ -11,12 +11,19 @@ import java.util.Objects;
 @JsonDeserialize(builder = PetServiceRequestContext.Builder.class)
 public final class PetServiceRequestContext implements RequestContext<PetEntry> {
 
+    private final String authorization;
     private final String requestId;
     private final String sessionId;
 
     private PetServiceRequestContext(Builder builder) {
+        authorization = builder.authorization;
         requestId = Objects.requireNonNull(builder.requestId);
         sessionId = Objects.requireNonNull(builder.sessionId);
+    }
+
+    @Override
+    public String getAuthorization() {
+        return authorization;
     }
 
     @Override
@@ -46,8 +53,15 @@ public final class PetServiceRequestContext implements RequestContext<PetEntry> 
 
     public static class Builder {
 
+        private String authorization;
         private String requestId;
         private String sessionId;
+
+        public Builder withAuthorization(String authorization) {
+            this.authorization = authorization;
+
+            return this;
+        }
 
         public Builder withRequestId(String requestId) {
             this.requestId = requestId;

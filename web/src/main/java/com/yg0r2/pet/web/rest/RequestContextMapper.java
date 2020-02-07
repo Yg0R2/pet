@@ -17,6 +17,7 @@ public class RequestContextMapper {
     @ModelAttribute("petServiceRequestContext")
     public RequestContext map(HttpServletRequest request) {
         return new PetServiceRequestContext.Builder()
+            .withAuthorization(getHeader(request, RequestParams.AUTHORIZATION))
             .withRequestId(getHeader(request, RequestParams.REQUEST_ID))
             .withSessionId(getHeader(request, RequestParams.SESSION_ID))
             .build();
