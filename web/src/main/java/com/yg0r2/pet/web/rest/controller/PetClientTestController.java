@@ -16,7 +16,7 @@ import javax.validation.constraints.Min;
 import javax.ws.rs.QueryParam;
 import java.util.UUID;
 
-//@RestController
+@RestController
 @RequestMapping("/api/test/client")
 public class PetClientTestController extends AbstractPetServiceController {
 
