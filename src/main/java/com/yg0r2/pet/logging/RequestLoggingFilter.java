@@ -3,7 +3,6 @@ package com.yg0r2.pet.logging;
 import com.yg0r2.core.api.model.RequestParams;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.CommonsRequestLoggingFilter;
 
@@ -30,9 +29,7 @@ public final class RequestLoggingFilter extends CommonsRequestLoggingFilter {
         MDC.put(SESSION_ID_KEY, request.getHeader(RequestParams.SESSION_ID.getValue()));
         MDC.put(REQUEST_ID_KEY, request.getHeader(RequestParams.REQUEST_ID.getValue()));
 
-        if (HttpMethod.GET.matches(request.getMethod())) {
-            loggingService.logRequest(httpServletRequest, null);
-        }
+        loggingService.logRequest(httpServletRequest, null);
     }
 
     @Override
