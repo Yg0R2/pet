@@ -6,6 +6,7 @@ plugins {
 apply from: "gradle/allProjects.gradle"
 apply from: "gradle/subProjects.gradle"
 apply from: "gradle/idea.gradle"
+apply from: "gradle/docker.gradle"
 
 springBoot {
     mainClassName = 'com.yg0r2.pet.PetApplication'
