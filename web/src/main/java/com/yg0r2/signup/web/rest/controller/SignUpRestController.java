@@ -1,6 +1,6 @@
-package com.yg0r2.signin.web.rest.controller;
+package com.yg0r2.signup.web.rest.controller;
 
-import com.yg0r2.signin.web.exceptions.UnableToSignInException;
+import com.yg0r2.signup.web.exceptions.UnableToSignUpException;
 import com.yg0r2.user.api.model.UserEntry;
 import com.yg0r2.user.dao.model.UserEntity;
 import com.yg0r2.user.service.UserService;
@@ -17,8 +17,8 @@ import javax.validation.Valid;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(path = "/sign-in")
-public class SignInRestController {
+@RequestMapping(path = "/sign-up")
+public class SignUpRestController {
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -28,12 +28,12 @@ public class SignInRestController {
     private UserTransformer userTransformer;
 
     @PostMapping
-    public ResponseEntity<?> signIn(@Valid @RequestBody UserEntry userEntry) {
+    public ResponseEntity<?> signUp(@Valid @RequestBody UserEntry userEntry) {
         Optional.of(userEntry)
             .map(userTransformer::transform)
             .map(this::encodeUserPassword)
             .map(userService::create)
-            .orElseThrow(() -> new UnableToSignInException("Failed to sign in user."));
+            .orElseThrow(() -> new UnableToSignUpException("Failed to sign in user."));
 
         return ResponseEntity.ok("User " + userEntry.getNickName() + " successfully created.");
     }
