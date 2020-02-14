@@ -1,4 +1,6 @@
-server.port: 8080
+server:
+  error.whitelabel.enabled: false
+  port: 8080
 
 jwt:
   secret: pet-project-secret-key
