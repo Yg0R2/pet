@@ -6,6 +6,7 @@ import com.yg0r2.pet.PetApplication;
 import com.yg0r2.pet.api.model.PetEntry;
 import com.yg0r2.pet.api.model.PetServiceRequestContext;
 import com.yg0r2.pet.dao.repository.PetRepository;
+import com.yg0r2.pet.web.security.JwtTokenFactory;
 import org.assertj.core.api.Condition;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -37,6 +38,8 @@ public class PetControllerACTest {
     private int port;
 
     @Autowired
+    private JwtTokenFactory jwtTokenFactory;
+    @Autowired
     private TestRestTemplate restTemplate;
     @Autowired
     private PetRepository petRepository;
@@ -50,7 +53,8 @@ public class PetControllerACTest {
     void testGetAll() {
         HttpEntity<PetEntry> httpEntity = createHttpEntity();
 
-        ResponseEntity<PetEntry[]> actual = restTemplate.exchange(getUrl(GET_ALL_URL), HttpMethod.GET, httpEntity, PetEntry[].class);
+        ResponseEntity<PetEntry[]> actual = restTemplate
+            .exchange(getUrl(GET_ALL_URL), HttpMethod.GET, httpEntity, PetEntry[].class);
 
         assertThat(actual)
             .is(OK_STATUS_CONDITION)
@@ -63,7 +67,8 @@ public class PetControllerACTest {
         PetEntry petEntry = createPetEntry(ID);
         HttpEntity<PetEntry> httpEntity = createHttpEntity(petEntry);
 
-        ResponseEntity<PetEntry> actual = restTemplate.exchange(getUrl(CREATE_URL), HttpMethod.POST, httpEntity, PetEntry.class);
+        ResponseEntity<PetEntry> actual = restTemplate
+            .exchange(getUrl(CREATE_URL), HttpMethod.POST, httpEntity, PetEntry.class);
 
         assertThat(actual)
             .is(OK_STATUS_CONDITION)
@@ -93,9 +98,10 @@ public class PetControllerACTest {
     private HttpHeaders createHttpHeaders(RequestContext requestContext) {
         HttpHeaders headers = new HttpHeaders();
 
-        headers.add(RequestParams.REQUEST_ID.getValue(), requestContext.getRequestId());
-        headers.add(RequestParams.SESSION_ID.getValue(), requestContext.getSessionId());
-        headers.add("Content-Type", MediaType.APPLICATION_JSON_UTF8_VALUE);
+        headers.set(RequestParams.REQUEST_ID.getValue(), requestContext.getRequestId());
+        headers.set(RequestParams.SESSION_ID.getValue(), requestContext.getSessionId());
+        headers.set("Content-Type", MediaType.APPLICATION_JSON_UTF8_VALUE);
+        headers.set(RequestParams.AUTHORIZATION.getValue(), jwtTokenFactory.create("spring"));
 
         return headers;
     }

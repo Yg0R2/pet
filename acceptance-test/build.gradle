@@ -8,6 +8,7 @@ dependencies {
     api(project(':')) {
         exclude group: 'com.yg0r2.pet', module: 'acceptance-test'
     }
+    api project(':').sourceSets.main.output
 
     testImplementation ('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'junit', module: 'junit'

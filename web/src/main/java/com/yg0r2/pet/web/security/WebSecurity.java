@@ -47,13 +47,14 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
             .and()
                 .csrf().disable()
                 .authorizeRequests()
-                    .antMatchers(HttpMethod.POST, "/sign-in").permitAll()
-                    .anyRequest().authenticated()
-            .and()
+                    .antMatchers(HttpMethod.GET, "/*").permitAll()
+                    //.antMatchers(HttpMethod.POST, "/sign-in").permitAll()
+                    //.anyRequest().authenticated()
+            /*.and()
                 .addFilter(new JwtAuthenticationFilter(authenticationManager(), jwtTokenFactory))
                 .addFilter(new JwtAuthorizationFilter(authenticationManager(), jwtClaimExtractor))
                 // Disable Spring Security session creation
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)*/;
     }
 
 }
