@@ -2,11 +2,29 @@ apply plugin: 'com.palantir.docker'
 
 dockerPrepare.dependsOn(bootJar, ':ui:build')
 
+task prepareDockerFiles() {
+    doLast {
+        def dockerDir = "${project.buildDir.getAbsolutePath()}/docker"
+
+        copy {
+            from zipTree(tasks.bootJar.outputs.files.singleFile)
+            into dockerDir
+        }
+
+        copy {
+            from project(':ui').buildDir
+            into "${dockerDir}/ui"
+        }
+
+        copy {
+            from "${project.rootDir}/nginx"
+            into "${dockerDir}/nginx"
+        }
+    }
+}
+
+tasks['docker'].dependsOn(prepareDockerFiles)
+
 docker {
     name "yg0r2/${bootJar.archiveBaseName.get()}"
-
-    copySpec
-        .from(zipTree(tasks.bootJar.outputs.files.singleFile))
-        .from(project(':ui').buildDir)
-        .into('.')
 }

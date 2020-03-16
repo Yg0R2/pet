@@ -1,6 +1,7 @@
 version: "3"
 services:
-  ep_sample:
-    image: com.yg0r2.pet/pet:latest
+  pet:
+    image: yg0r2/pet:latest
     ports:
-      - 8080:8080
+      - 80:80
+      - 443:443
