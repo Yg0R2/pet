@@ -8,16 +8,20 @@ task prepareDockerFiles() {
 
         copy {
             from zipTree(tasks.bootJar.outputs.files.singleFile)
+            from "${project.rootDir}/etc/docker-entrypoint.sh"
+
             into dockerDir
         }
 
         copy {
             from project(':ui').buildDir
+
             into "${dockerDir}/ui"
         }
 
         copy {
-            from "${project.rootDir}/nginx"
+            from "${project.rootDir}/etc/nginx"
+
             into "${dockerDir}/nginx"
         }
     }
