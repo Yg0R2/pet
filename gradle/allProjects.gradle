@@ -5,7 +5,6 @@ allprojects {
     apply plugin: 'org.springframework.boot'
 
     group 'com.yg0r2.pet'
-    version '0.0.2-SNAPSHOT'
 
     sourceCompatibility = '11'
 
