@@ -13,25 +13,37 @@ pipeline {
         timeout(time: 10, unit: 'MINUTES')
     }
 
+    parameters {
+        booleanParam(name: 'DEPLOY', description: 'Deploy Docker container', defaultValue: true)
+        booleanParam(name: 'RELEASE', description: 'Perform release?', defaultValue: false)
+        string(name: 'RELEASE_VERSION', description: 'Release version', defaultValue: '', trim: true)
+        string(name: 'NEXT_SNAPSHOT_VERSION', description: 'Nex snapshot version', defaultValue: '', trim: true)
+    }
+
     stages {
         stage('Preparation') {
             steps {
-                buildName "${BUILD_DISPLAY_NAME}"
-                //./gradlew properties -q | grep "version:" | awk '{print $2}'
+                script {
+                    def props = readProperties file: 'gradle.properties'
+
+                    withEnv(["PROJECT_VERSION=${props['version']}"]) {
+                        buildName "${BUILD_DISPLAY_NAME} - ${PROJECT_VERSION}"
+                    }
+                }
             }
         }
 
         stage('Build') {
             steps {
-                bat './gradlew.bat clean --stacktrace'
+                gradleExec('clean')
 
-                bat './gradlew.bat build -x test -x :ui:build --stacktrace'
+                gradleExec('build -x test -x :ui:build')
             }
         }
 
         stage('Unit Test') {
             steps {
-                bat './gradlew.bat test -x build -x :acceptance-test:test -x :ui:test --stacktrace'
+                gradleExec('test -x build -x :acceptance-test:test -x :ui:test')
 
                 junit '**/test-results/**/*.xml'
             }
@@ -39,22 +51,91 @@ pipeline {
 
         stage('Acceptance Test') {
             steps {
-                bat './gradlew.bat :acceptance-test:test --stacktrace'
+                gradleExec(':acceptance-test:test')
 
-                junit '**/test-results/**/*.xml'
+                junit 'acceptance-test/build/test-results/**/*.xml'
             }
         }
 
         stage('Build UI') {
             steps {
-                bat './gradlew.bat :ui:build --stacktrace'
+                gradleExec(':ui:build')
             }
         }
 
-        stage('Docker') {
+        stage('Release artifacts') {
+            when {
+                expression {
+                    return params.RELEASE && params.RELEASE_VERSION && params.NEXT_SNAPSHOT_VERSION
+                }
+            }
             steps {
-                bat './gradlew.bat docker -x build --stacktrace'
+                buildName "${BUILD_DISPLAY_NAME} - ${RELEASE_VERSION}"
+                buildDescription "Release"
+
+                gradleExec('release', [
+                    '-Prelease.useAutomaticVersion=true',
+                    "-Prelease.releaseVersion=${params.RELEASE_VERSION}",
+                    "-Prelease.newVersion=${params.NEXT_SNAPSHOT_VERSION}"
+                ])
             }
         }
+
+        stage('Prepare Docker Image') {
+            steps {
+                script {
+                    def version = params.RELEASE && params.RELEASE_VERSION ? params.RELEASE_VERSION : env.PROJECT_VERSION
+                    gradleExec('docker -x build', ["-Pversion=${version}"])
+                }
+            }
+        }
+
+        stage('Deploy') {
+            when {
+                expression {
+                    return params.DEPLOY
+                }
+            }
+            steps {
+                exec('''
+                    while [ "$( docker ps | grep pet )" != "" ]
+                    do
+                        docker stop pet
+                        sleep 2
+                    done
+                ''')
+
+                exec('''
+                    if [ "$( docker ps -a | grep pet )" != "" ]
+                    then
+                        docker rm pet
+                    fi
+                ''')
+
+                exec('docker run \
+                        -d --rm \
+                        --name pet \
+                        -p 0.0.0.0:8080:8080 \
+                        yg0r2/pet:latest')
+            }
+        }
+    }
+}
+
+def gradleExec(String tasks, List<String> params = [], boolean returnStdout = false) {
+    if (isUnix()) {
+        return sh(script: "./gradlew $args.tasks ${params.join(' ')} --stacktrace", returnStdout: returnStdout)
+    }
+    else {
+        return bat(script: "./gradlew.bat $tasks ${params.join(' ')} --stacktrace", returnStdout: returnStdout)
+    }
+}
+
+def exec(String script, boolean returnStdout = false) {
+    if (isUnix()) {
+        return sh(script: script, returnStdout: returnStdout)
+    }
+    else {
+        return bat(script: script, returnStdout: returnStdout)
     }
 }
