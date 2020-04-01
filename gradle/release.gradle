@@ -1,0 +1,15 @@
+apply plugin: 'net.researchgate.release'
+
+task publishArtifacts(type: GradleBuild) {
+    startParameter.projectProperties = gradle.startParameter.projectProperties
+    startParameter.systemPropertiesArgs  = gradle.startParameter.systemPropertiesArgs
+
+    tasks = ['publishToMavenLocal']
+}
+
+release {
+    buildTasks = ['publishArtifacts']
+    git {
+        requireBranch = 'master'
+    }
+}

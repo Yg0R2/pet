@@ -1,0 +1,14 @@
+apply plugin: 'maven-publish'
+
+task jarSources(type: Jar) {
+    from sourceSets.main.allSource
+    getArchiveClassifier().set('src')
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+        }
+    }
+}
