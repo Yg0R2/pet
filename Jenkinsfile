@@ -31,7 +31,7 @@ pipeline {
                         && params.RELEASE_VERSION as boolean \
                         && params.NEXT_SNAPSHOT_VERSION as boolean
                 }
-                buildName "${BUILD_DISPLAY_NAME} - ${PROJECT_VERSION}"
+                buildName "#${BUILD_NUMBER} - ${PROJECT_VERSION}"
 
                 echo 'Environment variables:'
                 script {
@@ -103,7 +103,7 @@ pipeline {
                 }
             }
             steps {
-                buildName "${BUILD_DISPLAY_NAME} - ${RELEASE_VERSION}"
+                buildName "#${BUILD_NUMBER} - ${params.RELEASE_VERSION}"
                 buildDescription "Release"
 
                 gradleExec('release', [
