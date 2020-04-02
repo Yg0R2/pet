@@ -2,8 +2,5 @@ version: "3"
 services:
   pet:
     image: yg0r2/pet:latest
-    environment:
-      BACKEND_URL: http://localhost:8080
     ports:
       - 80:80
-      - 443:443

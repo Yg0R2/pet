@@ -130,26 +130,9 @@ pipeline {
                 }
             }
             steps {
-                exec('''
-                    while [ "$( docker ps | grep pet )" != "" ]
-                    do
-                        docker stop pet
-                        sleep 2
-                    done
-                ''')
+                exec('docker-compose down')
 
-                exec('''
-                    if [ "$( docker ps -a | grep pet )" != "" ]
-                    then
-                        docker rm pet
-                    fi
-                ''')
-
-                exec('docker run \
-                        -d --rm \
-                        --name pet \
-                        -p 0.0.0.0:8080:8080 \
-                        yg0r2/pet:latest')
+                exec('docker-compose up -d')
             }
         }
     }

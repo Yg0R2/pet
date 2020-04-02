@@ -8,7 +8,7 @@ COPY nginx /etc/nginx/.
 WORKDIR /pet
 
 ADD docker-entrypoint.sh ./docker-entrypoint.sh
-RUN chmod 755 docker-entrypoint.sh
+RUN chmod a+x docker-entrypoint.sh
 
 COPY BOOT-INF/lib ./lib
 COPY META-INF ./META-INF
