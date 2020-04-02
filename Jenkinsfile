@@ -4,6 +4,8 @@ pipeline {
     agent any
 
     options {
+        skipDefaultCheckout()
+
         disableConcurrentBuilds()
 
         timestamps()
@@ -19,6 +21,21 @@ pipeline {
     }
 
     stages {
+        stage('Checkout') {
+            steps {
+                checkout([$class: 'GitSCM',
+                    branches: [[name: "${BRANCH_NAME}"]],
+                    doGenerateSubmoduleConfigurations: false,
+                    extensions: [
+                        [$class: 'SubmoduleOption', disableSubmodules: false, parentCredentials: true, recursiveSubmodules: true, reference: '', trackingSubmodules: false],
+                        [$class: 'LocalBranch', localBranch: "${BRANCH_NAME}"]
+                    ],
+                    submoduleCfg: [],
+                    userRemoteConfigs: [[credentialsId: 'Git', url: 'git@github.com:Yg0R2/pet.git']]
+                ])
+            }
+        }
+
         stage('Preparation') {
             steps {
                 script {
