@@ -1,0 +1,42 @@
+apply plugin: 'jacoco'
+
+def jacocoExclusions = [
+    '**/model/**',
+    '**/*Configuration.*',
+    '**/*Exception.*',
+    '**/*ExceptionHandler.*'
+]
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = 0.0
+            }
+        }
+    }
+
+    afterEvaluate {
+        getClassDirectories().setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, excludes: jacocoExclusions)
+        }))
+    }
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        html.enabled true
+    }
+    afterEvaluate {
+        getClassDirectories().setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, excludes: jacocoExclusions)
+        }))
+    }
+
+    finalizedBy jacocoTestCoverageVerification
+}
+
+test {
+    finalizedBy jacocoTestReport
+}

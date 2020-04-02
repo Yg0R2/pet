@@ -43,17 +43,38 @@ pipeline {
 
         stage('Unit Test') {
             steps {
-                gradleExec('test -x build -x :acceptance-test:test -x :ui:test')
+                gradleExec('test -x build -x jacocoTestReport -x :acceptance-test:test -x :ui:test')
+            }
+            post {
+                always {
+                    junit '**/test-results/**/*.xml'
+                }
+            }
+        }
 
-                junit '**/test-results/**/*.xml'
+        stage('Test coverage') {
+            steps {
+                gradleExec('jacocoTestReport')
+            }
+            post {
+                always {
+                    publishCoverage adapters: [
+                        jacocoAdapter('**/reports/jacoco/**/jacocoTestReport.xml')
+                    ]
+                }
             }
         }
 
         stage('Acceptance Test') {
             steps {
-                gradleExec(':acceptance-test:test')
+                gradleExec(':acceptance-test:test -x jacocoTestReport')
 
                 junit 'acceptance-test/build/test-results/**/*.xml'
+            }
+            post {
+                always {
+                    junit '**/test-results/**/*.xml'
+                }
             }
         }
 

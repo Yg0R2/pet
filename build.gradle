@@ -5,10 +5,10 @@ plugins {
     id 'net.researchgate.release' version '2.8.1' apply false
 }
 
-apply from: "gradle/allProjects.gradle"
-apply from: "gradle/subProjects.gradle"
-apply from: "gradle/idea.gradle"
-apply from: "gradle/docker.gradle"
+apply from: 'gradle/allProjects.gradle'
+apply from: 'gradle/subProjects.gradle'
+apply from: 'gradle/idea.gradle'
+apply from: 'gradle/docker.gradle'
 apply from: 'gradle/release.gradle'
 
 springBoot {
