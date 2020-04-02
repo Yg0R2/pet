@@ -25,11 +25,9 @@ pipeline {
             steps {
                 script {
                     def props = readProperties file: 'gradle.properties'
-
-                    withEnv(["PROJECT_VERSION=${props['version']}"]) {
-                        buildName "${BUILD_DISPLAY_NAME} - ${PROJECT_VERSION}"
-                    }
+                    env.PROJECT_VERSION = props['version']
                 }
+                buildName "${BUILD_DISPLAY_NAME} - ${PROJECT_VERSION}"
 
                 echo 'Environment variables:'
                 script {
