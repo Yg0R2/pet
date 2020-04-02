@@ -26,6 +26,10 @@ pipeline {
                 script {
                     def props = readProperties file: 'gradle.properties'
                     env.PROJECT_VERSION = props['version']
+
+                    env.RELEASE = params.RELEASE as boolean \
+                        && params.RELEASE_VERSION as boolean \
+                        && params.NEXT_SNAPSHOT_VERSION as boolean
                 }
                 buildName "${BUILD_DISPLAY_NAME} - ${PROJECT_VERSION}"
 
@@ -95,7 +99,7 @@ pipeline {
         stage('Release artifacts') {
             when {
                 expression {
-                    return params.RELEASE && params.RELEASE_VERSION && params.NEXT_SNAPSHOT_VERSION
+                    return env.RELEASE == 'true'
                 }
             }
             steps {
@@ -113,7 +117,7 @@ pipeline {
         stage('Prepare Docker Image') {
             steps {
                 script {
-                    def version = params.RELEASE && params.RELEASE_VERSION ? params.RELEASE_VERSION : env.PROJECT_VERSION
+                    def version = env.RELEASE == 'true' ? params.RELEASE_VERSION : env.PROJECT_VERSION
                     gradleExec('docker -x build', ["-Pversion=${version}"])
                 }
             }
