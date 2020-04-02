@@ -119,6 +119,8 @@ pipeline {
                 script {
                     def version = env.RELEASE == 'true' ? params.RELEASE_VERSION : env.PROJECT_VERSION
                     gradleExec('docker -x build', ["-Pversion=${version}"])
+
+                    exec("docker tag yg0r2/pet yg0r2/pet:$version")
                 }
             }
         }
