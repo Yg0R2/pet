@@ -30,6 +30,16 @@ pipeline {
                         buildName "${BUILD_DISPLAY_NAME} - ${PROJECT_VERSION}"
                     }
                 }
+
+                echo 'Environment variables:'
+                script {
+                    if (isUnix()) {
+                        sh 'printenv'
+                    }
+                    else {
+                        bat 'SET'
+                    }
+                }
             }
         }
 
