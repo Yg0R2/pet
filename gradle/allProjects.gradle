@@ -5,17 +5,15 @@ allprojects {
     apply plugin: 'org.springframework.boot'
 
     apply from: "$rootDir/gradle/jacoco.gradle"
-    apply from: "$rootDir/gradle/maven-publish.gradle"
 
     group 'com.yg0r2.pet'
 
     sourceCompatibility = '11'
 
     repositories {
+        mavenLocal()
         mavenCentral()
-        jcenter {
-            url "http://jcenter.bintray.com/"
-        }
+        jcenter()
     }
 
     compileJava {

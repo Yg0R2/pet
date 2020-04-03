@@ -14,22 +14,16 @@ pipeline {
     }
 
     parameters {
-        booleanParam(name: 'DEPLOY', description: 'Deploy Docker container', defaultValue: true)
-        booleanParam(name: 'RELEASE', description: 'Perform release?', defaultValue: false)
-        string(name: 'RELEASE_VERSION', description: 'Release version', defaultValue: '', trim: true)
-        string(name: 'NEXT_SNAPSHOT_VERSION', description: 'Nex snapshot version', defaultValue: '', trim: true)
+        booleanParam(name: 'DEPLOY', defaultValue: true)
+        booleanParam(name: 'RELEASE', defaultValue: false)
     }
 
     stages {
         stage('Preparation') {
             steps {
                 script {
-                    env.RELEASE = params.RELEASE as boolean \
-                        && params.RELEASE_VERSION as boolean \
-                        && params.NEXT_SNAPSHOT_VERSION as boolean
-
                     def props = readProperties file: 'gradle.properties'
-                    env.VERSION = env.RELEASE == 'true' ? params.RELEASE_VERSION : props['version']
+                    env.VERSION = props['version']
                 }
                 buildName "#${BUILD_NUMBER} - ${VERSION}"
 
@@ -99,17 +93,21 @@ pipeline {
         stage('Release artifacts') {
             when {
                 expression {
-                    return env.RELEASE == 'true'
+                    return params.RELEASE
                 }
             }
             steps {
                 buildDescription "Release"
 
-                gradleExec('release', [
-                    '-Prelease.useAutomaticVersion=true',
-                    "-Prelease.releaseVersion=${params.RELEASE_VERSION}",
-                    "-Prelease.newVersion=${params.NEXT_SNAPSHOT_VERSION}"
-                ])
+                gradleExec('release', ['-Prelease.useAutomaticVersion=true'])
+            }
+            post {
+                always {
+                    script {
+                        env.VERSION = exec('git describe --abbrev=0', true)
+                    }
+                    buildName "#${BUILD_NUMBER} - ${VERSION}"
+                }
             }
         }
 
@@ -132,16 +130,26 @@ pipeline {
                     try {
                         exec('docker stop -t 0 pet')
                     }
-                    catch(error) {
+                    catch (error) {
                     }
 
                     try {
                         exec('docker rm -f pet')
                     }
-                    catch(error) {
+                    catch (error) {
                     }
 
                     exec("docker run -d --rm -p 80:80 --name pet --network=\"pet-network\" yg0r2/pet:${VERSION}")
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            script {
+                if (params.RELEASE) {
+                    cleanWs()
                 }
             }
         }
@@ -162,6 +170,12 @@ def exec(String script, boolean returnStdout = false) {
         return sh(script: script, returnStdout: returnStdout)
     }
     else {
-        return bat(script: script, returnStdout: returnStdout)
+        def result = bat(script: script, returnStdout: returnStdout)
+
+        if (result as boolean) {
+            result = result.trim().readLines().drop(1).join(" ")
+        }
+
+        return result
     }
 }

@@ -4,7 +4,7 @@ task publishArtifacts(type: GradleBuild) {
     startParameter.projectProperties = gradle.startParameter.projectProperties
     startParameter.systemPropertiesArgs  = gradle.startParameter.systemPropertiesArgs
 
-    tasks = ['publishToMavenLocal']
+    tasks = ['publish']
 }
 
 release {
