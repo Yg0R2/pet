@@ -1,6 +1,6 @@
 version: "3"
 services:
   pet:
-    image: yg0r2/pet:latest
+    image: yg0r2/pet:${VERSION:-latest}
     ports:
       - 80:80

@@ -24,14 +24,14 @@ pipeline {
         stage('Preparation') {
             steps {
                 script {
-                    def props = readProperties file: 'gradle.properties'
-                    env.PROJECT_VERSION = props['version']
-
                     env.RELEASE = params.RELEASE as boolean \
                         && params.RELEASE_VERSION as boolean \
                         && params.NEXT_SNAPSHOT_VERSION as boolean
+
+                    def props = readProperties file: 'gradle.properties'
+                    env.VERSION = env.RELEASE == 'true' ? params.RELEASE_VERSION : props['version']
                 }
-                buildName "#${BUILD_NUMBER} - ${PROJECT_VERSION}"
+                buildName "#${BUILD_NUMBER} - ${VERSION}"
 
                 echo 'Environment variables:'
                 script {
@@ -103,7 +103,6 @@ pipeline {
                 }
             }
             steps {
-                buildName "#${BUILD_NUMBER} - ${params.RELEASE_VERSION}"
                 buildDescription "Release"
 
                 gradleExec('release', [
@@ -116,12 +115,9 @@ pipeline {
 
         stage('Prepare Docker Image') {
             steps {
-                script {
-                    def version = env.RELEASE == 'true' ? params.RELEASE_VERSION : env.PROJECT_VERSION
-                    gradleExec('docker -x build', ["-Pversion=${version}"])
+                gradleExec('docker -x build', ["-Pversion=${VERSION}"])
 
-                    exec("docker tag yg0r2/pet yg0r2/pet:$version")
-                }
+                exec("docker tag yg0r2/pet yg0r2/pet:${VERSION}")
             }
         }
 
@@ -134,7 +130,14 @@ pipeline {
             steps {
                 exec('docker-compose down')
 
-                exec('docker-compose up -d')
+                script {
+                    if (isUnix()) {
+                        sh "VERSION=${DOCKER_IMAGE_VERSION} docker-compose up -d"
+                    }
+                    else {
+                        bat("SET \"VERSION=${DOCKER_IMAGE_VERSION}\" && docker-compose up -d")
+                    }
+                }
             }
         }
     }
