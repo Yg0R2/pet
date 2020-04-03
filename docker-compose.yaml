@@ -1,7 +1,7 @@
 version: "3.7"
 services:
   pet:
-    image: yg0r2/pet:${VERSION:-latest}
+    image: yg0r2/pet:latest
     networks:
       - pet-network
     ports:

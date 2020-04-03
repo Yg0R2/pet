@@ -128,15 +128,20 @@ pipeline {
                 }
             }
             steps {
-                exec('docker-compose down')
-
                 script {
-                    if (isUnix()) {
-                        sh "VERSION=${DOCKER_IMAGE_VERSION} docker-compose up -d"
+                    try {
+                        exec('docker stop -t 0 pet')
                     }
-                    else {
-                        bat("SET \"VERSION=${DOCKER_IMAGE_VERSION}\" && docker-compose up -d")
+                    catch(error) {
                     }
+
+                    try {
+                        exec('docker rm -f pet')
+                    }
+                    catch(error) {
+                    }
+
+                    exec("docker run -d --rm -p 80:80 --name pet --network=\"pet-network\" yg0r2/pet:${VERSION}")
                 }
             }
         }
