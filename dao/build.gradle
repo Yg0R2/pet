@@ -1,3 +1,5 @@
+apply from: "$rootDir/gradle/maven-publish.gradle"
+
 dependencies {
     api group: 'org.springframework', name: 'spring-context'
 

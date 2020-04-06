@@ -1,3 +1,5 @@
+apply from: "$rootDir/gradle/maven-publish.gradle"
+
 dependencies {
     api project(':api')
     api project(':fuse')
