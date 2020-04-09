@@ -174,11 +174,13 @@ pipeline {
 }
 
 def gradleExec(String tasks, List<String> params = [], boolean returnStdout = false) {
+    params.add('--stacktrace')
+
     if (isUnix()) {
-        return sh(script: "./gradlew $tasks ${params.join(' ')} --stacktrace", returnStdout: returnStdout)
+        return sh(script: "./gradlew $tasks ${params.join(' ')}", returnStdout: returnStdout)
     }
     else {
-        return bat(script: "./gradlew.bat $tasks ${params.join(' ')} --stacktrace", returnStdout: returnStdout)
+        return bat(script: "./gradlew.bat $tasks ${params.join(' ')}", returnStdout: returnStdout)
     }
 }
 
