@@ -72,14 +72,10 @@ pipeline {
 
         stage('Test coverage') {
             steps {
-                gradleExec(['jacocoTestReport'])
-            }
-            post {
-                always {
-                    publishCoverage adapters: [
-                        jacocoAdapter('**/reports/jacoco/**/jacocoTestReport.xml')
-                    ]
-                }
+                jacoco changeBuildStatus: true, buildOverBuild: true,
+                    maximumBranchCoverage: '0', maximumClassCoverage: '0', maximumComplexityCoverage: '0', maximumInstructionCoverage: '0', maximumLineCoverage: '0', maximumMethodCoverage: '0',
+                    minimumBranchCoverage: '0', minimumClassCoverage: '0', minimumComplexityCoverage: '0', minimumInstructionCoverage: '0', minimumLineCoverage: '0', minimumMethodCoverage: '0',
+                    sourceExclusionPattern: '**/model/**,**/*Configuration.*,**/*Exception.*,**/*ExceptionHandler.*'
             }
         }
 
