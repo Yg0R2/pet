@@ -136,17 +136,9 @@ pipeline {
             }
             steps {
                 script {
-                    try {
-                        exec('docker stop -t 0 pet')
-                    }
-                    catch (error) {
-                    }
+                    exec.silent('docker stop -t 0 pet')
 
-                    try {
-                        exec('docker rm -f pet')
-                    }
-                    catch (error) {
-                    }
+                    exec.silent('docker rm -f pet')
 
                     exec("docker run -d --rm -p 80:80 --name pet --network=\"pet-network\" yg0r2/pet:${VERSION}")
                 }
