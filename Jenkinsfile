@@ -1,5 +1,7 @@
 #!/usr/bin/env groovy
 
+@Library('pet-pipeline') _
+
 pipeline {
     agent any
 
@@ -45,28 +47,21 @@ pipeline {
                 buildName "#${BUILD_NUMBER} - ${VERSION}"
 
                 echo 'Environment variables:'
-                script {
-                    if (isUnix()) {
-                        sh 'printenv'
-                    }
-                    else {
-                        bat 'SET'
-                    }
-                }
+                printEnv()
             }
         }
 
         stage('Build') {
             steps {
-                gradleExec('clean')
+                gradleExec(['clean'])
 
-                gradleExec('build -x test -x :ui:build')
+                gradleExec(['build', '-x test', '-x :ui:build'])
             }
         }
 
         stage('Unit Test') {
             steps {
-                gradleExec('test -x build -x jacocoTestReport -x :acceptance-test:test -x :ui:test')
+                gradleExec(['test', '-x build', '-x jacocoTestReport', '-x :acceptance-test:test', '-x :ui:test'])
             }
             post {
                 always {
@@ -77,7 +72,7 @@ pipeline {
 
         stage('Test coverage') {
             steps {
-                gradleExec('jacocoTestReport')
+                gradleExec(['jacocoTestReport'])
             }
             post {
                 always {
@@ -90,7 +85,7 @@ pipeline {
 
         stage('Acceptance Test') {
             steps {
-                gradleExec(':acceptance-test:test -x jacocoTestReport')
+                gradleExec([':acceptance-test:test', '-x jacocoTestReport'])
 
                 junit 'acceptance-test/build/test-results/**/*.xml'
             }
@@ -103,7 +98,7 @@ pipeline {
 
         stage('Build UI') {
             steps {
-                gradleExec(':ui:build')
+                gradleExec([':ui:build'])
             }
         }
 
@@ -116,21 +111,22 @@ pipeline {
             steps {
                 buildDescription "Release"
 
-                gradleExec('release', ['-Prelease.useAutomaticVersion=true'])
+                gradleExec(tasks: ['release'], params: ['-Prelease.useAutomaticVersion=true'])
             }
             post {
                 always {
                     script {
-                        env.VERSION = exec('git describe --abbrev=0', true)
+                        env.VERSION = exec(script: 'git describe --abbrev=0', returnStdout: true)
                     }
                     buildName "#${BUILD_NUMBER} - ${VERSION}"
+                    buildDescription "Release"
                 }
             }
         }
 
         stage('Prepare Docker Image') {
             steps {
-                gradleExec('docker -x build', ["-Pversion=${VERSION}"])
+                gradleExec(tasks: ['docker', '-x build'], params: ["-Pversion=${VERSION}"])
 
                 exec("docker tag yg0r2/pet yg0r2/pet:${VERSION}")
             }
@@ -170,31 +166,5 @@ pipeline {
                 }
             }
         }
-    }
-}
-
-def gradleExec(String tasks, List<String> params = [], boolean returnStdout = false) {
-    params.add('--stacktrace')
-
-    if (isUnix()) {
-        return sh(script: "./gradlew $tasks ${params.join(' ')}", returnStdout: returnStdout)
-    }
-    else {
-        return bat(script: "./gradlew.bat $tasks ${params.join(' ')}", returnStdout: returnStdout)
-    }
-}
-
-def exec(String script, boolean returnStdout = false) {
-    if (isUnix()) {
-        return sh(script: script, returnStdout: returnStdout)
-    }
-    else {
-        def result = bat(script: script, returnStdout: returnStdout)
-
-        if (result as boolean) {
-            result = result.trim().readLines().drop(1).join(" ")
-        }
-
-        return result
     }
 }
