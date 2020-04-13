@@ -61,7 +61,7 @@ pipeline {
 
         stage('Unit Test') {
             steps {
-                gradleExec(['test', '-x build', '-x jacocoTestReport', '-x :acceptance-test:test', '-x :ui:test'])
+                gradleExec(['test', '-x build', '-x :acceptance-test:test', '-x :ui:test'])
             }
             post {
                 always {
@@ -81,7 +81,7 @@ pipeline {
 
         stage('Acceptance Test') {
             steps {
-                gradleExec([':acceptance-test:test', '-x jacocoTestReport'])
+                gradleExec([':acceptance-test:test'])
 
                 junit 'acceptance-test/build/test-results/**/*.xml'
             }
