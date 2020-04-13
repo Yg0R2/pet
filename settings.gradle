@@ -1,9 +1,11 @@
 rootProject.name = 'pet'
+
 include 'acceptance-test'
 include 'api'
 include 'client'
 include 'dao'
 include 'fuse'
+include 'jenkins-pipeline'
 include 'service'
 include 'ui'
 include 'web'
