@@ -13,5 +13,18 @@ node {
 task buildUi(type: NpmTask, dependsOn: npmInstall) {
     args = ['run', 'build']
 }
-
 assemble.dependsOn buildUi
+buildUi.mustRunAfter 'cleanUi'
+
+task cleanUi() {
+    delete project(':ui').buildDir
+
+    delete "${project(':').sourceSets.main.resources.srcDirs[0]}/static"
+}
+clean.dependsOn 'cleanUi'
+
+task deployUi(type: Copy, dependsOn: ['cleanUi', 'buildUi']) {
+    from project(':ui').buildDir
+
+    into "${project(':').sourceSets.main.resources.srcDirs[0]}/static"
+}
