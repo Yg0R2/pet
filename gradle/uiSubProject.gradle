@@ -1,0 +1,42 @@
+project(':ui') {
+    apply plugin: 'com.github.node-gradle.node'
+
+    jar {
+        enabled = false
+    }
+
+    node {
+        distBaseUrl = 'https://nodejs.org/dist'
+        version = nodeJsVersion
+        download = true
+    }
+
+    task buildUi(type: NpmTask, dependsOn: npmInstall) {
+        args = ['run', 'build']
+    }
+    assemble.dependsOn buildUi
+    buildUi.mustRunAfter 'cleanUi'
+
+    def mainProjectUiResourcesDir = "${project(':').sourceSets.main.resources.srcDirs[0]}/static"
+
+    task cleanUi() {
+        doLast() {
+            delete mainProjectUiResourcesDir
+
+            delete project(':ui').buildDir
+        }
+    }
+    clean.dependsOn 'cleanUi'
+
+    // Task for IDEA
+    task deployUi() {
+        doLast() {
+            copy {
+                from project(':ui').buildDir
+
+                into mainProjectUiResourcesDir
+            }
+        }
+    }
+    deployUi.mustRunAfter 'cleanUi', 'buildUi'
+}
