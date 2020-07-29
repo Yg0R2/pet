@@ -1,6 +1,6 @@
 package com.yg0r2.pet.logging;
 
-import com.yg0r2.core.api.model.RequestParams;
+import com.yg0r2.core.api.model.HeaderParams;
 
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +27,8 @@ public final class RequestLoggingFilter extends CommonsRequestLoggingFilter {
 
     @Override
     protected void beforeRequest(HttpServletRequest request, String message) {
-        MDC.put(SESSION_ID_KEY, request.getHeader(RequestParams.SESSION_ID.getValue()));
-        MDC.put(REQUEST_ID_KEY, request.getHeader(RequestParams.REQUEST_ID.getValue()));
+        MDC.put(SESSION_ID_KEY, request.getHeader(HeaderParams.SESSION_ID.getValue()));
+        MDC.put(REQUEST_ID_KEY, request.getHeader(HeaderParams.REQUEST_ID.getValue()));
 
         loggingService.logRequest(httpServletRequest, null);
     }

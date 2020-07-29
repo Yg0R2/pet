@@ -1,6 +1,8 @@
+#cors.allowed-origins: "*"
+
 jwt:
   secret: pet-project-secret-key
-  token.duration: PT5S
+  expirationDuration: 5m
 
 security.require-ssl: true
 

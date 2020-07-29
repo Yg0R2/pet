@@ -1,8 +1,10 @@
 import React from 'react';
+import {Redirect} from "react-router";
 
 import PetRow from './PetRow';
 
-import apiAxios from '../../apiAxios';
+import authService from '../../services/authService';
+import axiosService from '../../services/axiosService';
 
 import styles from './Pet.module.css';
 
@@ -17,11 +19,13 @@ class Pet extends React.Component {
   };
 
   componentDidMount() {
-    this.refreshPetList();
+    if (authService.isAuthenticated()) {
+      this.refreshPetList();
+    }
   }
 
   deletePetHandler = (id) => {
-    apiAxios.delete(`/api/pet/${id}`, {data: null})
+    axiosService.delete(`/api/pet/${id}`)
       .then(_ => {
         this.setState({
           status: {
@@ -41,12 +45,16 @@ class Pet extends React.Component {
   }
 
   refreshPetList = () => {
-    apiAxios.get("/api/pet", {data: null})
+    axiosService.get("/api/pet")
       .then(response => this.setState({petList: response.data}))
       .catch(error => console.log(error));
   }
 
   render() {
+    if (!authService.isAuthenticated()) {
+      return <Redirect to="/" />;
+    }
+
     const status = this.state.status.message ?
       <div className={this.state.status.type}>{this.state.status.message}</div> :
       null;
@@ -68,13 +76,13 @@ class Pet extends React.Component {
         {status}
         <table>
           <thead>
-            <tr>
-              <th>ID</th>
-              <th>Title</th>
-            </tr>
+          <tr>
+            <th>ID</th>
+            <th>Title</th>
+          </tr>
           </thead>
           <tbody>
-            {rows}
+          {rows}
           </tbody>
         </table>
       </div>

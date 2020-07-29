@@ -9,7 +9,7 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Objects;
 
-@Controller
+//@Controller
 public class PetServiceErrorController implements ErrorController {
 
     private static final String ERROR_PATH = "/error";

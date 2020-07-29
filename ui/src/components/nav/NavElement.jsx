@@ -6,7 +6,7 @@ import styles from './NavElement.module.css';
 const navElement = (props) => {
   return (
     <li className={styles.navElement}>
-      <NavLink to={props.to}>{props.title}</NavLink>
+      <NavLink to={props.to} onClick={props.onClick}>{props.title}</NavLink>
     </li>
   );
 }
