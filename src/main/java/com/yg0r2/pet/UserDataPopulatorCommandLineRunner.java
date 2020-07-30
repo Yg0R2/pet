@@ -8,7 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DummyDataPopulatorCommandLineRunner implements CommandLineRunner {
+public class UserDataPopulatorCommandLineRunner implements CommandLineRunner {
 
     private static final String DEFAULT_USER_NICK_NAME = "test";
     private static final String DEFAULT_USER_PASSWORD = "test";
@@ -19,8 +19,8 @@ public class DummyDataPopulatorCommandLineRunner implements CommandLineRunner {
     private UserService userService;
 
     @Override
-    public void run(String... args) throws Exception {
-        UserEntity testUser = createDefaultUser();
+    public void run(String... args) {
+        createDefaultUser();
     }
 
     private UserEntity createDefaultUser() {

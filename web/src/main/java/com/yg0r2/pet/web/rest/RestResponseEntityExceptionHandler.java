@@ -3,9 +3,9 @@ package com.yg0r2.pet.web.rest;
 import com.yg0r2.pet.service.exceptions.PetEntryNotFoundException;
 import com.yg0r2.pet.service.exceptions.PetServiceInternalException;
 import com.yg0r2.pet.service.exceptions.UnableToCreatePetEntryException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -17,18 +17,15 @@ public class RestResponseEntityExceptionHandler extends ResponseStatusExceptionR
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RestResponseEntityExceptionHandler.class);
 
-    @ExceptionHandler(value = PetEntryNotFoundException.class)
-    public ResponseEntity<String> handleNotFoundExceptions(PetEntryNotFoundException exception) {
-        LOGGER.error("Entry not found.", exception);
+    @ExceptionHandler(value = {
+        EmptyResultDataAccessException.class,
+        PetEntryNotFoundException.class,
+        UnableToCreatePetEntryException.class
+    })
+    public ResponseEntity<String> handleNotFoundExceptions(RuntimeException exception) {
+        LOGGER.error(exception.getMessage(), exception);
 
-        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler(value = UnableToCreatePetEntryException.class)
-    public ResponseEntity<String> handleCreateExceptions(UnableToCreatePetEntryException exception) {
-        LOGGER.error("Entry creation failed.", exception);
-
-        return new ResponseEntity<>(exception.getMessage(), HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(value = {PetServiceInternalException.class, RuntimeException.class})

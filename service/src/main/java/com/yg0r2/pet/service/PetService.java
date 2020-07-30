@@ -34,6 +34,11 @@ public class PetService {
             .orElseThrow(() -> new UnableToCreatePetEntryException("Unable to create PetEntry: " + petEntry));
     }
 
+    @Transactional
+    public void delete(long id) {
+        petRepository.deleteById(id);
+    }
+
     public List<PetEntry> getAll() {
         Iterable<PetEntity> petEntities = Optional.ofNullable(petRepository.findAll())
             .orElse(Collections.emptyList());

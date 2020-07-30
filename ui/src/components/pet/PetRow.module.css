@@ -1,0 +1,11 @@
+.delete {
+    background-color: lightgreen;
+    border: green 0.1em solid;
+    border-radius: 0.5em;
+    cursor: pointer;
+    padding: 0.1em 1em;
+}
+
+.odd {
+    background-color: lightgray;
+}

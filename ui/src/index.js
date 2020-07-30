@@ -1,4 +1,5 @@
-import {BrowserRouter} from 'react-router-dom';
+import {MemoryRouter} from 'react-router';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 
@@ -9,11 +10,11 @@ import * as serviceWorker from './serviceWorker';
 import './index.css';
 
 const app = (
-  <BrowserRouter>
-    {/*<React.StrictMode>*/}
+  <React.StrictMode>
+    <MemoryRouter>
       <App />
-    {/*</React.StrictMode>*/}
-  </BrowserRouter>
+    </MemoryRouter>
+  </React.StrictMode>
 );
 
 ReactDOM.render(app, document.getElementById('root'));

@@ -7,6 +7,9 @@ build/
 **/logs/
 **/*.db
 
+### Built resources ###
+src/main/resources/static/
+
 ### STS ###
 .apt_generated
 .classpath
