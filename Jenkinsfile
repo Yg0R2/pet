@@ -140,7 +140,7 @@ pipeline {
 
                     exec.silent('docker rm -f pet')
 
-                    exec("docker run -d --rm -p 80:80 --name pet --network=\"pet-network\" yg0r2/pet:${VERSION}")
+                    exec("docker run -d --rm -p 80:80 -p 443:443 --name pet --network=\"pet-network\" -e \"SPRING_PROFILES_ACTIVE=default\" yg0r2/pet:${VERSION}")
                 }
             }
         }

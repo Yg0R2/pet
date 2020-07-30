@@ -1,7 +1,7 @@
 #management.endpoints.web.exposure.include: "*"
 
 clients.pet:
-  baseUrl: http://localhost:8080
+  baseUrl: https://localhost:8080
   urls:
     createUrl: ${clients.pet.baseUrl}/api/pet
     getAllUrl: ${clients.pet.baseUrl}/api/pet

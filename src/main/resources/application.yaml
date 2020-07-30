@@ -2,9 +2,15 @@ jwt:
   secret: pet-project-secret-key
   token.duration: PT5S
 
+security.require-ssl: true
+
 server:
   error.whitelabel.enabled: false
-  port: 8080
+  port: 8443
+  ssl:
+    key-store-password: pettest
+    key-store: classpath:pet-ssl-key.p12
+    key-store-type: PKCS12
 
 spring.datasource:
   driverClassName: "org.h2.Driver"

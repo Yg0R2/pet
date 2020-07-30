@@ -1,16 +1,16 @@
-package com.yg0r2.pet.web.controller;
+package com.yg0r2.pet.web.rest.controller;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 @RequestMapping(path = "/hello")
 public class DummyController {
 
     @GetMapping
     public String hello() {
-        return "hello";
+        return "Hello World";
     }
 
 }
