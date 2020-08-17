@@ -12,15 +12,22 @@ public final class SignInResponse {
     @NotBlank
     private final String accessToken;
     @NotBlank
+    private final String sessionId;
+    @NotBlank
     private final String userName;
 
     public SignInResponse(Builder builder) {
         accessToken = builder.accessToken;
+        sessionId = builder.sessionId;
         userName = builder.userName;
     }
 
     public String getAccessToken() {
         return accessToken;
+    }
+
+    public String getSessionId() {
+        return sessionId;
     }
 
     public String getUserName() {
@@ -45,10 +52,17 @@ public final class SignInResponse {
     public static class Builder {
 
         private String accessToken;
+        private String sessionId;
         private String userName;
 
         public Builder withAccessToken(String accessToken) {
             this.accessToken = accessToken;
+
+            return this;
+        }
+
+        public Builder withSessionId(String sessionId) {
+            this.sessionId = sessionId;
 
             return this;
         }

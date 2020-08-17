@@ -25,14 +25,14 @@ public class RestResponseEntityExceptionHandler extends ResponseStatusExceptionR
         RuntimeException.class,
         UnableToCreatePetEntryException.class
     })
-    public ResponseEntity<String> handleNotFoundExceptions(Exception exception) {
+    public ResponseEntity<String> handleBadRequest(Exception exception) {
         LOGGER.error(exception.getMessage(), exception);
 
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(value = {PetServiceInternalException.class, Exception.class})
-    public ResponseEntity<String> handleInternalException(Exception exception) {
+    public ResponseEntity<String> handleInternalServerError(Exception exception) {
         LOGGER.error(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), exception);
 
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), HttpStatus.INTERNAL_SERVER_ERROR);

@@ -12,7 +12,11 @@ import './App.css';
 class App extends React.Component {
 
   signOut = () => {
-    authService.signOut();
+    authService.signOut()
+      .then(_ => {
+        window.location.href = "/";
+        // window.location.reload();
+      });
   }
 
   render() {

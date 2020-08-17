@@ -25,18 +25,30 @@ function getHeaders() {
   };
 }
 
+function handleUnauthorized(error) {
+  if (error.response.status === 401) {
+    authService.signOut()
+      .then(_ => window.location.href = "/sign-in");
+  }
+
+  throw error;
+}
+
 class AxiosService {
 
   delete(url) {
-    return apiAxios.delete(url, {data: null, headers: getHeaders()});
+    return apiAxios.delete(url, {data: null, headers: getHeaders()})
+      .catch(error => handleUnauthorized(error));
   }
 
   get(url) {
-    return apiAxios.get(url, {data: null, headers: getHeaders()});
+    return apiAxios.get(url, {data: null, headers: getHeaders()})
+      .catch(error => handleUnauthorized(error));
   }
 
   post(url, data) {
-    return apiAxios.post(url, data, {headers: getHeaders()});
+    return apiAxios.post(url, data, {headers: getHeaders()})
+      .catch(error => handleUnauthorized(error));
   }
 
 }

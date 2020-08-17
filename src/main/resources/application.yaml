@@ -9,6 +9,11 @@ security.require-ssl: true
 server:
   error.whitelabel.enabled: false
   port: 8443
+  servlet.session:
+    cookie:
+      http-only: true
+      secure: true
+    timeout: ${jwt.expirationDuration}
   ssl:
     key-store-password: pettest
     key-store: classpath:pet-ssl-key.p12
