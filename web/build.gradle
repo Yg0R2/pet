@@ -1,8 +1,11 @@
 dependencies {
     api project(':service')
 
+    api 'org.springframework.boot:spring-boot-starter-data-redis'
     api 'org.springframework.boot:spring-boot-starter-security'
     api 'org.springframework.boot:spring-boot-starter-web'
+
+    api 'org.springframework.session:spring-session-data-redis'
 
     api group: 'io.jsonwebtoken', name: 'jjwt', version: '+'
 

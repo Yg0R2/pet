@@ -13,9 +13,6 @@ class App extends React.Component {
 
   signOut = () => {
     authService.signOut();
-
-    window.location.href = "/";
-    // window.location.reload();
   }
 
   render() {

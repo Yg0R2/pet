@@ -29,7 +29,14 @@ class AuthService {
   }
 
   signOut() {
-    localStorage.removeItem(ITEM_KEY)
+    localStorage.removeItem(ITEM_KEY);
+
+    axiosService.post("/api/sign-out", {})
+      .then(_ => {
+        window.location.href = "/";
+        // window.location.reload();
+      })
+      .catch(error => console.log(error));
   }
 
 }
